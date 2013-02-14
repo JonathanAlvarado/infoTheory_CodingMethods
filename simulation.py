@@ -1,37 +1,56 @@
-import random
-from sys import argv
+import random,sys
 
-def readFile(f):
-    '''lee archivo con probabilidades '''
-    file = open(f, 'r')
-    data = []
-    for line in file.readlines():
-        if '//' not in line:
-            p,q01,q10 = line.split(",")
-            data.append((float(p), float(q01), float(q10)))
-    #print data
-    file.close()
-    return data
+class Simulation:
 
-def binary(p,n):
-    ''''crea palabras binarias aleatoriamente '''
-    word=""
-    for i in range(n):
-        rand = random.uniform(-1.0,1.0)
-        if rand >= 0 and rand < p:
-            word += "0"
-        else:
-            word += "1"
-    print word
-    return word
+    def __init__(self,frequency,length,nTimes,prob0, prob1):
+        self.freq = frequency
+        self.length = length
+        self.probs = [[prob0, 1-prob0],[1-prob1, prob1]]
+        self.simulator(nTimes)
+
+    def wordGenerator(self):
+        word = []
+        for i in range(self.length):
+            rand = random.uniform(0,1)
+            if rand > self.freq:
+                word.append(0)
+            else:
+                word.append(1)
+        #print word
+        return word
     
-def simulation(f):
-    probs = readFile(f)
+    def transmission(self,word):
+        received = []
+        for i in range(len(word)):
+            rand = random.uniform(0,1)
+            
+            if word[i] is 0:
+                if rand >= self.probs[0][0]:
+                    received.append(0)
+                else:
+                    received.append(1)
+            elif word[i] is 1:
+                if rand >= self.probs[1][1] :
+                    received.append(0)
+                else:
+                    received.append(1)
+        #print received
+        return received
+        
+    def simulator(self, nTimes):
+        for i in range(nTimes):
+            word = self.wordGenerator()
+            received = self.transmission(word)
+
+
+def main():
+    nTimes = int(sys.argv[1])
+    frequency = float(sys.argv[2])
+    length = int(sys.argv[3])
+    prob0 = float(sys.argv[4])
+    prob1 = float(sys.argv[5])
     
-    for x in range(len(probs)):
-        p, q11, q21 = probs[x]
-        for y in range(30):
-            word = binary(p,y)
+    sim = Simulation(frequency, length, nTimes,prob0,prob1)
 
 if __name__ == "__main__":
-    simulation(argv[1])
+    main()
