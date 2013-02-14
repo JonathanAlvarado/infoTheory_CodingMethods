@@ -8,12 +8,16 @@ class Simulation:
         
         self.doc = open(fileName,'w')
         
-        for i in range(1, (length+1)):
+        for i in range(2, (length+1)):
+            '''Gets the average of the successes of 
+            transmitting a word correctly '''
             self.avrg = (self.simulator(i,nTimes))
             self.doc.write( str(i) + ' ' + str(self.avrg)+ '\n')
             
 
     def wordGenerator(self, length):
+        '''Generate new word using a random number and comparing it
+        against the frequency of producing a 0'''
         word = []
         for i in range(length):
             rand = random.uniform(0,1)
@@ -25,6 +29,8 @@ class Simulation:
         return word
     
     def simulator(self,length, nTimes):
+        '''Main function. Makes a new word and simulate its 
+        transmission and compare the word against the received word'''
         success = 0
         for i in range(nTimes):
             word = self.wordGenerator(length)
@@ -32,11 +38,13 @@ class Simulation:
             
             equal = self.comparison(word,received)
             if equal : success +=1
-        print success
+        #print success
         average = float(success)/nTimes
         return average
 
     def transmission(self,word):
+        """Simulates word transmission's using the probabilities
+        of transmit a 0 as a 0 and a 1 as a 1"""
         received = []
         for i in word:
             rand = random.uniform(0,1)
@@ -55,6 +63,7 @@ class Simulation:
         return received
 
     def comparison(self,word,received):
+        '''Compare the original word against the received word '''
         wrd = ''
         rcv = ''
         for i in range(len(word)):
@@ -63,23 +72,17 @@ class Simulation:
         #print wrd, "   ", rcv
         if wrd == rcv : return True
         else : return False
-'''
-    def average(self,nTimes):
-        average = 0.0
-        for i in successes:
-            average +=i
-        self.successes = self./nTimes
-        return average
 
-    def standardDesviation(self):
-        variance = 0.0
-        for i in successes:
-            variance = pow( (i - self.avrg), 2)
-        variance = variance / len(successes)
-        stdDes = pow(variance,0.5)
-        return stdDes'''
 
 def main():
+    '''
+    fileName = name of the .dat file
+    nTimes = number of times that the word will be transmitted 
+    frequency = frequency that a 0 will be added to the new word 
+    length = max length of the words
+    prob0 = probability that a 0 will be transmitted as a 0 
+    prob1 = probability that a 1 will be transmitted as a 1'''
+    
     fileName = sys.argv[1]
     nTimes = int(sys.argv[2])
     frequency = float(sys.argv[3])
