@@ -9,15 +9,6 @@ class Node:
     def __str__(delf):
         return self.letter
 
-    def __cmp__( self, other ):
-        if other != None:
-            if self.frequency < other.frequency:  res = -1
-            elif self.frequency > other.frequency:  res = 1
-            else :  res = 0
-            return res
-        else:
-            return 1
-
 def lettersFrequency(text):
     freq = {}
     for c in text:
