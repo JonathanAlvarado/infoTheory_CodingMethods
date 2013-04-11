@@ -88,7 +88,6 @@ def decompress(node, compressed):
     ctext = []
     for c in compressed:
         ctext.append(c)
-    print node.letter
     msg = ''
     while len(ctext) > 0:
         n = int(ctext.pop(0))
@@ -101,7 +100,6 @@ def decompress(node, compressed):
         else:
             if (node.right != None and len(node.right.letter) == 1):
                 msg += node.right.letter
-                print node.right.letter
                 node = root
             else:
                 node = node.right
@@ -110,7 +108,8 @@ def decompress(node, compressed):
     
 
 if __name__ == '__main__':
-    text = 'test this'
+    #text = 'test this'
+    text = raw_input('Text to compress: ')
     text = text.replace('\t',' ').replace('\n',' ')
     freq = lettersFrequency(text)
     freq = orderFrequencies(freq)
@@ -118,9 +117,9 @@ if __name__ == '__main__':
     getCodes(tree[0])
     data = huffmanTree(tree[0], data = {})
     #getInfo(tree[0])
-    print tree[0].letter
     codesTable, compressed = compress(data, text)
-    print compressed
-    print codesTable
+    print 'Original Text: ', text,'\n'
+    print 'Compressed text: ',compressed,'\n'
+    print 'Codes table:\n',codesTable,'\n'
     msg = decompress(tree[0], compressed)
-    print msg
+    print 'Decompressed text: ', msg
