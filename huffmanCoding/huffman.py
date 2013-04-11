@@ -28,9 +28,10 @@ def orderFrequencies(freq):
     return nodes
 
 def getInfo(node):
-    print 'letra:',node.letter
-    print 'frequency', node.frequency
-    print 'code:', node.code, '\n'
+    if len(node.letter) == 1:
+        print 'letter:',node.letter
+        print 'frequency', node.frequency
+        print 'code:', node.code, '\n'
     if node.left != None:
         getInfo(node.left)
     if node.right != None:
@@ -120,6 +121,7 @@ if __name__ == '__main__':
     codesTable, compressed = compress(data, text)
     print 'Original Text: ', text,'\n'
     print 'Compressed text: ',compressed,'\n'
-    print 'Codes table:\n',codesTable,'\n'
+    #print 'Codes table:\n',codesTable,'\n'
+    getInfo(tree[0])
     msg = decompress(tree[0], compressed)
     print 'Decompressed text: ', msg
